@@ -1,0 +1,19 @@
+syntax = "proto3";
+import "akkaserverless/annotations.proto";
+import "google/protobuf/struct.proto";
+
+package com.lightbend.demos.domain;
+
+option java_outer_classname = "DocumentDomain";
+
+
+option (akkaserverless.file).value_entity = {
+  name: "Document"
+  entity_type: "document"
+  state: "DocumentState"
+};
+
+
+message DocumentState {
+  google.protobuf.Value value = 1;
+}

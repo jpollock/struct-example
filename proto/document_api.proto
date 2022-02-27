@@ -1,0 +1,36 @@
+// This is the public API offered by your entity.
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "akkaserverless/annotations.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/struct.proto";
+
+package com.lightbend.demos;
+
+option java_outer_classname = "DocumentApi";
+
+message SetValue {
+  string tenant =1 [(akkaserverless.field).entity_key = true]; 
+  string key = 2 [(akkaserverless.field).entity_key = true];
+  google.protobuf.Value value = 3;
+}
+
+message GetValue {
+  string tenant = 1 [(akkaserverless.field).entity_key = true];
+  string key = 2 [(akkaserverless.field).entity_key = true];
+}
+
+message CurrentValue {
+  google.protobuf.Value value = 1;
+}
+
+service DocumentService {
+  option (akkaserverless.service) = {
+    type : SERVICE_TYPE_ENTITY
+    component : ".domain.Document"
+};
+
+  rpc Set(SetValue) returns (google.protobuf.Empty);
+  rpc Get(GetValue) returns (CurrentValue);
+}
